@@ -1,14 +1,16 @@
+
 # FM-DX Webserver Plugin: Snow ❄️
 
 A lightweight, high-performance falling snow effect for the **FM-DX Webserver** dashboard. This plugin uses HTML5 Canvas to render a cozy winter atmosphere without affecting the performance of the spectrum analyzer or the user interface.
 
 ## ✨ Features
 
+*   **UI Integration:** Toggle the snow on or off directly from the webserver's **Settings** panel.
+*   **Persistent Settings:** Remembers your preference via Cookies, so you don't have to turn it on/off every time you visit.
 *   **High Performance:** Uses `HTML5 Canvas` (60FPS) instead of DOM elements, ensuring smooth animations even on low-end devices.
 *   **Non-Intrusive:** The snow overlay uses `pointer-events: none`, so you can click buttons, knobs, and tune frequencies right through the snow.
 *   **Parallax Depth:** Flakes vary in size, speed, and opacity to create a realistic 3D depth effect.
 *   **Wind Simulation:** The snow reacts gently to mouse movements, drifting based on cursor position.
-*   **Fully Configurable:** Easily adjust density, speed, size, opacity, and wind sensitivity.
 
 ## 📥 Installation
 
@@ -19,25 +21,20 @@ A lightweight, high-performance falling snow effect for the **FM-DX Webserver** 
 
 ## ⚙️ Configuration
 
-You can customize the look and feel of the snow by editing the top of `SnowEffect/pluginSnowEffect.js`.
+While the On/Off state is handled by the UI, you can still customize the physics and look of the snow by editing `SnowEffect/pluginSnowEffect.js`.
 
-Open the file and look for the `snowConfig` object:
+Open the file and modify the `snowConfig` object at the top:
 
 ```javascript
 const snowConfig = {
-    // Master switch to turn the effect on/off
-    enabled: true,
-
     // Quantity of snow.
-    // 0.1 = Light snow
-    // 0.3 = Heavy snow
-    // (Calculated based on screen width)
+    // 0.1 = Light snow, 0.5 = Blizzard
+    // (Calculated automatically based on screen width)
     density: 0.15,
 
     // Fall Speed Multiplier.
     // 0.5 = Slow motion
     // 1.0 = Normal
-    // 2.0 = Blizzard
     speed: 1.0,
 
     // How much the mouse movement pushes the snow.
@@ -52,6 +49,7 @@ const snowConfig = {
 
     // Visuals
     color: "255, 255, 255", // RGB value
-    opacity: 0.8,           // Maximum opacity of the flakes (0.0 to 1.0)
-    zIndex: 9999            // CSS Z-Index (Stacking order)
+    opacity: 0.4,           // Max opacity of the flakes
+    zIndex: 99999           // Layer order (Keep high to cover everything)
 };
+```
