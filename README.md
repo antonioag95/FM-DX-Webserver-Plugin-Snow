@@ -14,9 +14,8 @@ A lightweight, high-performance falling snow effect for the **FM-DX Webserver** 
 
 1.  **Download** this repository (Code -> Download ZIP) or the latest release.
 2.  **Extract** the files.
-3.  Copy the everything in your **plugin** folder.
-4.  Paste it into your FM-DX Webserver plugins directory:
-5.  **Restart** your webserver and enable the plugin from admin settings.
+3.  Paste it into your FM-DX Webserver plugins directory:
+4.  **Restart** your webserver and enable the plugin from admin settings.
 
 ## ⚙️ Configuration
 
