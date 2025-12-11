@@ -1,5 +1,4 @@
 // pluginSnowEffect.js
-// Winter snow effect with mobile support
 
 $(document).ready(function () {
     // Plugin info
@@ -27,6 +26,7 @@ $(document).ready(function () {
     let width, height;
     let wind = 0;
     let isRunning = false;
+    let lastFlakeCount = 0;
 
     // Cookie management
     function setCookie(name, value, days) {
@@ -117,13 +117,36 @@ $(document).ready(function () {
     function resizeCanvas() {
         if (!canvas) return;
         
-        width = window.innerWidth || document.documentElement.clientWidth;
-        height = window.innerHeight || document.documentElement.clientHeight;
+        const newWidth = window.innerWidth || document.documentElement.clientWidth;
+        const newHeight = window.innerHeight || document.documentElement.clientHeight;
+        
+        // Only resize if width changed significantly (not just height from address bar)
+        const widthChanged = Math.abs(newWidth - width) > 10;
+        
+        width = newWidth;
+        height = newHeight;
         
         canvas.width = width;
         canvas.height = height;
         
-        initFlakes();
+        // Only recreate flakes if width changed (horizontal resize/rotation)
+        // Ignore vertical changes from mobile address bar
+        if (widthChanged) {
+            const newFlakeCount = Math.floor(width * snowConfig.density);
+            
+            // Adjust flake count instead of recreating all
+            if (newFlakeCount > lastFlakeCount) {
+                // Add more flakes
+                for (let i = lastFlakeCount; i < newFlakeCount; i++) {
+                    flakes.push(new Snowflake());
+                }
+            } else if (newFlakeCount < lastFlakeCount) {
+                // Remove excess flakes
+                flakes = flakes.slice(0, newFlakeCount);
+            }
+            
+            lastFlakeCount = newFlakeCount;
+        }
     }
 
     function startSnow() {
@@ -155,7 +178,13 @@ $(document).ready(function () {
         ctx = canvas.getContext('2d');
         if (!ctx) return;
         
-        resizeCanvas();
+        width = window.innerWidth || document.documentElement.clientWidth;
+        height = window.innerHeight || document.documentElement.clientHeight;
+        canvas.width = width;
+        canvas.height = height;
+        
+        initFlakes();
+        lastFlakeCount = flakes.length;
         isRunning = true;
 
         $(window).on('resize.snow orientationchange.snow', resizeCanvas);
